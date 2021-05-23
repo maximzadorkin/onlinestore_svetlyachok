@@ -1,0 +1,30 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+        Helvetica, Arial, sans-serif;
+    max-width: 38rem;
+    padding: 0;
+    margin: 0;
+    background: #fff;
+    color: #333;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: Verdana;
+    font-size: 14px;
+    font-weight: 100;
+    margin: 0;
+    padding: 0;
+}
+
+#root {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
