@@ -3,11 +3,11 @@ import {connect} from 'react-redux'
 import RowModal from '../../components/RowModal'
 import ControlPanel from '../../components/ControlPanel'
 import Table from '../../components/Table'
-import DB from '../../utils/Database/ProductCategories'
+import DB from '../../utils/Database/Providers'
 import {Actions} from '../../store/actions'
 import _ from 'lodash'
 
-const ProductCategories = ({rows, columns, get, add, update, del}) => {
+const Providers = ({rows, columns, get, add, update, del}) => {
 
     const [openModal, setOpenModal] = React.useState({open: false, refactorMode: false})
     const [selectionModel, setSelectionModel] = React.useState([])
@@ -120,4 +120,4 @@ const mapDispatchToProps = dispatch => ({
     }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProductCategories)
+export default connect(mapStateToProps, mapDispatchToProps)(Providers)

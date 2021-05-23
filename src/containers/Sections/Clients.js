@@ -3,11 +3,11 @@ import {connect} from 'react-redux'
 import RowModal from '../../components/RowModal'
 import ControlPanel from '../../components/ControlPanel'
 import Table from '../../components/Table'
-import DB from '../../utils/Database/ProductCategories'
+import DB from '../../utils/Database/Clients'
 import {Actions} from '../../store/actions'
 import _ from 'lodash'
 
-const ProductCategories = ({rows, columns, get, add, update, del}) => {
+const Clients = ({rows, columns, positions, get, add, update, del}) => {
 
     const [openModal, setOpenModal] = React.useState({open: false, refactorMode: false})
     const [selectionModel, setSelectionModel] = React.useState([])
@@ -54,15 +54,43 @@ const ProductCategories = ({rows, columns, get, add, update, del}) => {
                 readOnly: true
             },
             {
-                label: 'Наименование',
-                value: refactorMode ? selected.Наименование : '',
+                label: 'Имя',
+                value: refactorMode ? selected.Имя : '',
                 required: true,
+                readOnly: false
+            },
+            {
+                label: 'Отчество',
+                value: refactorMode ? selected.Отчество : '',
+                required: false,
+                readOnly: false
+            },
+            {
+                label: 'Фамилия',
+                value: refactorMode ? selected.Фамилия : '',
+                required: true,
+                readOnly: false
+            },
+            {
+                label: 'Телефон',
+                value: refactorMode ? selected.Телефон : '',
+                required: false,
+                readOnly: false
+            },
+            {
+                label: 'Email',
+                value: refactorMode ? selected.Email : '',
+                required: false,
                 readOnly: false
             }
         ]
     }
 
-    const getTableRow = () => _.cloneDeep(rows)
+    const getTableRow = () => _.cloneDeep(rows).map(row => {
+        if (row.hasOwnProperty('Должности'))
+            row.Должности = row.Должности.value.join(', ')
+        return row
+    })
 
     return (
         <>
@@ -99,12 +127,17 @@ const mapStateToProps = state => {
         rows: state.rows,
         columns: [
             {field: 'id', headerName: 'id'},
-            {field: 'Наименование', headerName: 'Наименование'},
+            {field: 'Имя', headerName: 'Имя'},
+            {field: 'Отчество', headerName: 'Отчество'},
+            {field: 'Фамилия', headerName: 'Фамилия'},
+            {field: 'Телефон', headerName: 'Телефон'},
+            {field: 'Email', headerName: 'Email'},
         ]
     }
 }
 
 const mapDispatchToProps = dispatch => ({
+
     get: () => DB.get((err, rows) => dispatch(Actions.setRows(rows))),
     add: row => DB.add(
         row,
@@ -118,6 +151,7 @@ const mapDispatchToProps = dispatch => ({
         DB.del(row)
         dispatch(Actions.deleteRow(row))
     }
+
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProductCategories)
+export default connect(mapStateToProps, mapDispatchToProps)(Clients)

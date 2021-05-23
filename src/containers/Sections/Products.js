@@ -3,11 +3,11 @@ import {connect} from 'react-redux'
 import RowModal from '../../components/RowModal'
 import ControlPanel from '../../components/ControlPanel'
 import Table from '../../components/Table'
-import DB from '../../utils/Database/ProductCategories'
+import DB from '../../utils/Database/Products'
 import {Actions} from '../../store/actions'
 import _ from 'lodash'
 
-const ProductCategories = ({rows, columns, get, add, update, del}) => {
+const Products = ({rows, columns, productCategories, productVendors, get, add, update, del}) => {
 
     const [openModal, setOpenModal] = React.useState({open: false, refactorMode: false})
     const [selectionModel, setSelectionModel] = React.useState([])
@@ -58,11 +58,59 @@ const ProductCategories = ({rows, columns, get, add, update, del}) => {
                 value: refactorMode ? selected.Наименование : '',
                 required: true,
                 readOnly: false
+            },
+            {
+                label: 'Цена',
+                value: refactorMode ? selected.Цена : '',
+                required: true,
+                readOnly: false
+            },
+            {
+                label: 'Описание',
+                value: refactorMode ? selected.Описание : '',
+                required: false,
+                readOnly: false
+            },
+            {
+                label: 'КоличествоНаСкладе',
+                value: refactorMode ? selected.КоличествоНаСкладе : '',
+                required: true,
+                readOnly: false
+            },
+            {
+                label: 'Категории_id',
+                value: refactorMode ? [selected.Категории_id.value] : [],
+                selectionList: productCategories.map(p => ({
+                    id: p.id,
+                    value: p.Наименование,
+                })),
+                multiple: false,
+                required: true,
+                readOnly: false
+            },
+            {
+                label: 'Производитель_id',
+                value: refactorMode ? [selected.Производитель_id.value] : [],
+                selectionList: productVendors.map(p => ({
+                    id: p.id,
+                    value: p.Наименование,
+                })),
+                multiple: false,
+                required: true,
+                readOnly: false
             }
         ]
     }
 
-    const getTableRow = () => _.cloneDeep(rows)
+    const getTableRow = () => _.cloneDeep(rows).map(row => {
+        row.Производитель_id = productVendors.find(pv => pv.id === row.Производитель_id)
+        row.Категории_id = productCategories.find(pc => pc.id === row.Категории_id)
+        if (row.Производитель_id instanceof Object)
+            row.Производитель_id = row.Производитель_id.Наименование
+        if (row.Категории_id instanceof Object)
+            row.Категории_id = row.Категории_id.Наименование
+        return row
+    })
 
     return (
         <>
@@ -100,7 +148,14 @@ const mapStateToProps = state => {
         columns: [
             {field: 'id', headerName: 'id'},
             {field: 'Наименование', headerName: 'Наименование'},
-        ]
+            {field: 'Цена', headerName: 'Цена'},
+            {field: 'Описание', headerName: 'Описание'},
+            {field: 'КоличествоНаСкладе', headerName: 'Количество на складе'},
+            {field: 'Категории_id', headerName: 'Категория'},
+            {field: 'Производитель_id', headerName: 'Производитель'}
+        ],
+        productCategories: state.productCategories,
+        productVendors: state.productVendors
     }
 }
 
@@ -117,7 +172,7 @@ const mapDispatchToProps = dispatch => ({
     del: row => {
         DB.del(row)
         dispatch(Actions.deleteRow(row))
-    }
+    },
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProductCategories)
+export default connect(mapStateToProps, mapDispatchToProps)(Products)

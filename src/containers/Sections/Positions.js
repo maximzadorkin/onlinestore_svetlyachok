@@ -3,11 +3,11 @@ import {connect} from 'react-redux'
 import RowModal from '../../components/RowModal'
 import ControlPanel from '../../components/ControlPanel'
 import Table from '../../components/Table'
-import DB from '../../utils/Database/ProductCategories'
+import DB from '../../utils/Database/Positions'
 import {Actions} from '../../store/actions'
 import _ from 'lodash'
 
-const ProductCategories = ({rows, columns, get, add, update, del}) => {
+const Positions = ({rows, columns, get, add, update, del}) => {
 
     const [openModal, setOpenModal] = React.useState({open: false, refactorMode: false})
     const [selectionModel, setSelectionModel] = React.useState([])
@@ -25,10 +25,10 @@ const ProductCategories = ({rows, columns, get, add, update, del}) => {
         else
             add(row)
     }
-    const HandleAddRow = () => {
+    const HandleAddRow = (row = null) => {
         setOpenModal({open: true, refactorMode: false})
     }
-    const HandleRefactorRow = () => {
+    const HandleRefactorRow = (row = null) => {
         if (!haveSelectedRow()) return
         setOpenModal({open: true, refactorMode: true})
     }
@@ -106,18 +106,20 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
     get: () => DB.get((err, rows) => dispatch(Actions.setRows(rows))),
-    add: row => DB.add(
-        row,
-        () => DB.get((err, rows) => dispatch(Actions.setRows(rows)))
-    ),
-    update: row => DB.update(
-        row,
-        () => DB.get((err, rows) => dispatch(Actions.setRows(rows)))
-    ),
+    add: row =>
+        DB.add(
+            row,
+            () => DB.get((err, rows) => dispatch(Actions.setRows(rows)))
+        ),
+    update: row =>
+        DB.update(
+            row,
+            () => DB.get((err, rows) => dispatch(Actions.setRows(rows)))
+        ),
     del: row => {
         DB.del(row)
         dispatch(Actions.deleteRow(row))
     }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProductCategories)
+export default connect(mapStateToProps, mapDispatchToProps)(Positions)

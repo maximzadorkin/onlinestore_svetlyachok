@@ -1,10 +1,10 @@
 import * as React from 'react'
 import { DataGrid } from '@material-ui/data-grid'
 
-const SetWidth = columns => columns.map((val) => ({
-        ...val,
-        width: Math.trunc((window.innerWidth * 0.75) / columns.length)}
-))
+const SetWidth = (columns) => columns.map((val) => ({
+    ...val,
+    width: Math.trunc((window.innerWidth * 0.75) / columns.length)
+}))
 
 const Table = ({rows, columns, onRowClick, selectionModel, setSelectionModel}) => {
 
@@ -21,5 +21,6 @@ const Table = ({rows, columns, onRowClick, selectionModel, setSelectionModel}) =
         </div>
     )
 }
+
 
 export default Table

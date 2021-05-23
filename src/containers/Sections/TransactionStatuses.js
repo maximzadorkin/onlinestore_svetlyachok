@@ -3,11 +3,11 @@ import {connect} from 'react-redux'
 import RowModal from '../../components/RowModal'
 import ControlPanel from '../../components/ControlPanel'
 import Table from '../../components/Table'
-import DB from '../../utils/Database/ProductCategories'
+import DB from '../../utils/Database/TransactionStatuses'
 import {Actions} from '../../store/actions'
 import _ from 'lodash'
 
-const ProductCategories = ({rows, columns, get, add, update, del}) => {
+const TransactionStatuses = ({rows, columns, get, add, update, del}) => {
 
     const [openModal, setOpenModal] = React.useState({open: false, refactorMode: false})
     const [selectionModel, setSelectionModel] = React.useState([])
@@ -54,8 +54,8 @@ const ProductCategories = ({rows, columns, get, add, update, del}) => {
                 readOnly: true
             },
             {
-                label: 'Наименование',
-                value: refactorMode ? selected.Наименование : '',
+                label: 'Описание',
+                value: refactorMode ? selected.Описание : '',
                 required: true,
                 readOnly: false
             }
@@ -99,25 +99,28 @@ const mapStateToProps = state => {
         rows: state.rows,
         columns: [
             {field: 'id', headerName: 'id'},
-            {field: 'Наименование', headerName: 'Наименование'},
+            {field: 'Описание', headerName: 'Описание'},
         ]
     }
 }
 
 const mapDispatchToProps = dispatch => ({
     get: () => DB.get((err, rows) => dispatch(Actions.setRows(rows))),
+
     add: row => DB.add(
         row,
         () => DB.get((err, rows) => dispatch(Actions.setRows(rows)))
     ),
+
     update: row => DB.update(
         row,
         () => DB.get((err, rows) => dispatch(Actions.setRows(rows)))
     ),
+
     del: row => {
         DB.del(row)
         dispatch(Actions.deleteRow(row))
     }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProductCategories)
+export default connect(mapStateToProps, mapDispatchToProps)(TransactionStatuses)

@@ -10,7 +10,7 @@ const get = (callback = null) => {
 const add = (row, callback = null) => {
     const connection = _getDataBaseConnection()
     connection.connect()
-    connection.query(`insert into СтатусыСделки(Описание) values('${row.СтатусыСделки}');`, callback)
+    connection.query(`insert into СтатусыСделки(Описание) values('${row.Описание}');`, callback)
     connection.end()
 }
 

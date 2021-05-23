@@ -10,13 +10,14 @@ const get = (callback = null) => {
 const add = (row, callback = null) => {
     const connection = _getDataBaseConnection()
     connection.connect()
-    connection.query(`insert into категории(Наименование) values('${row.Категория}');`, callback)
+    connection.query(`insert into категории(Наименование) values('${row.Наименование}');`, callback)
     connection.end()
 }
 
 const update = (row, callback = null) => {
     const connection = _getDataBaseConnection()
     connection.connect()
+    console.log(row)
     connection.query(`update категории set Наименование='${row.Наименование}' where id='${row.id}';`, callback)
     connection.end()
 }
