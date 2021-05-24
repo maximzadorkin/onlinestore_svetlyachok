@@ -19,9 +19,12 @@ import DBClients from '../utils/Database/Clients'
 import DBProducts from '../utils/Database/Products'
 import DBProductCategories from '../utils/Database/ProductCategories'
 import DBProcurement from '../utils/Database/Procurement'
+import DBTransaction from '../utils/Database/Transactions'
+import DBNEWTrans from '../utils/Database/NewTransaction'
 import Products from './Sections/Products'
 import Procurement from './Sections/Procurement'
-import DBProvider from '../utils/Database/Providers'
+import Transactions from './Sections/Transactions'
+import NewTransaction from './Sections/NewTransaction'
 
 
 const App = (props) => {
@@ -72,7 +75,13 @@ const App = (props) => {
                 props.getClients()
                 return <Clients />
             case 'Сделки':
-                return <ErrorPage />
+                props.getTransactions()
+                return <Transactions />
+            case 'Создать заказ':
+                props.setProducts()
+                props.setClients()
+                props.getSalers()
+                return <NewTransaction />
             case 'Статусы сделки':
                 props.getTransactionStatuses()
                 return <TransactionStatuses />
@@ -103,6 +112,7 @@ const App = (props) => {
                         <MenuItem onClick={handleClose}>Сотрудники</MenuItem>
                         <MenuItem onClick={handleClose}>Клиенты</MenuItem>
                         <MenuItem onClick={handleClose}>Сделки</MenuItem>
+                        <MenuItem onClick={handleClose}>Создать заказ</MenuItem>
                         <MenuItem onClick={handleClose}>Статусы сделки</MenuItem>
                     </Menu>
                 </Box>
@@ -125,6 +135,7 @@ const mapDispatchToProps = dispatch => {
         getRowsPositions: () => DBPositions.get(callback),
         getProductVendors: () => DBProductVendors.get(callback),
         getClients: () => DBClients.get(callback),
+        setClients: () => DBClients.get((err, rows) => dispatch(Actions.setClients(rows))),
         getProducts: () => DBProducts.get(callback),
         getProductCategories: () => DBProductCategories.get(callback),
         setProductCategories:
@@ -136,7 +147,9 @@ const mapDispatchToProps = dispatch => {
             () => DBProcurement.getProcProducts((err, rows) => dispatch(Actions.setProcurementProducts(rows))),
         setProviders: () => DBProviders.get((err, result) => dispatch(Actions.setProviders(result))),
         setStaff: () => DBStaff.get((err, rows) => dispatch(Actions.setStaff(rows))),
-        setProducts: () => DBProducts.get((err, res) => dispatch(Actions.setProducts(res)))
+        setProducts: () => DBProducts.get((err, res) => dispatch(Actions.setProducts(res))),
+        getTransactions: () => DBTransaction.getTransactions((err, res) => dispatch(Actions.setTransactions(res))),
+        getSalers: () => DBNEWTrans.getSalers((err, rows) => dispatch(Actions.setSalers(rows))),
     }
 }
 

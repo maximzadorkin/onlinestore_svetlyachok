@@ -82,6 +82,8 @@
   "dependencies": {
     "@material-ui/core": "^4.11.4",
     "@material-ui/data-grid": "^4.0.0-alpha.29",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/pickers": "^3.3.10",
     "electron-squirrel-startup": "^1.0.0",
     "lodash": "^4.17.21",
     "mysql2": "^2.2.5",

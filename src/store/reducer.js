@@ -5,12 +5,25 @@ const initState = {
     rows: [],
     positions: [],
     productCategories: [],
-    productVendors: []
+    productVendors: [],
+    salers: [],
+    transactions: [],
+    products: [],
+    staff: [],
+    providers: [],
+    procurementProducts: [],
+
 }
 
 const reducer = (state = initState, action) => {
 
     switch (action.type) {
+        case ActionTypes.SET_CLIENTS:
+            return {...state, clients: action.payload}
+        case ActionTypes.SET_SALERS:
+            return {...state, salers: action.payload}
+        case ActionTypes.SET_TRANSACTIONS:
+            return {...state, transactions: action.payload}
         case ActionTypes.SET_PRODUCTS:
             return {...state, products: action.payload}
         case ActionTypes.SET_STAFF:

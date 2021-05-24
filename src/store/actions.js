@@ -51,6 +51,21 @@ const setProducts = payload => ({
     payload
 })
 
+const setTransactions = payload => ({
+    type: ActionTypes.SET_TRANSACTIONS,
+    payload
+})
+
+const setSalers = payload => ({
+    type: ActionTypes.SET_SALERS,
+    payload
+})
+
+const setClients = payload => ({
+    type: ActionTypes.SET_CLIENTS,
+    payload
+})
+
 export const Actions = {
     setRows,
     updateRow,
@@ -61,5 +76,8 @@ export const Actions = {
     setProcurementProducts,
     setProviders,
     setStaff,
-    setProducts
+    setProducts,
+    setTransactions,
+    setSalers,
+    setClients
 }

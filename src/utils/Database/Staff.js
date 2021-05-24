@@ -53,6 +53,7 @@ const add = (row, callback = null) => {
                 callback()
 
             row.Должности.forEach(val => {
+                console.log(val)
                 const connection = _getDataBaseConnection()
                 connection.connect()
                 connection.query(
@@ -70,7 +71,21 @@ const update = (row, callback = null) => {
     const connection = _getDataBaseConnection()
     connection.connect()
     const data = `Имя='${row.Имя}', Отчество='${row.Отчество}', Фамилия='${row.Фамилия}', Телефон='${row.Телефон}', Email='${row.Email}'`
-    connection.query(`update сотрудники set ${data} where id='${row.id}';`, callback)
+    connection.query(`update сотрудники set ${data} where id='${row.id}';`, (err, result) => {
+        const connection = _getDataBaseConnection()
+        connection.connect()
+        row.Должности.forEach(val => {
+            const connection = _getDataBaseConnection()
+            connection.connect()
+            connection.query(
+                `insert into Должности_Сотрудники(Должности_id, Сотрудники_id) values('${val}', '${row.id}');`,
+                (err, result) => callback()
+            )
+            connection.end()
+        })
+        callback()
+        connection.end()
+    })
     connection.end()
 }
 
