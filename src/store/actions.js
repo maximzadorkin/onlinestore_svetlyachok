@@ -31,11 +31,35 @@ const setProductVendors = vendors => ({
     payload: vendors
 })
 
+const setProcurementProducts = payload => ({
+    type: ActionTypes.SET_PROCUREMENT_PRODUCTS,
+    payload
+})
+
+const setProviders = payload => ({
+    type: ActionTypes.SET_PROVIDERS ,
+    payload
+})
+
+const setStaff = payload => ({
+    type: ActionTypes.SET_STAFF,
+    payload
+})
+
+const setProducts = payload => ({
+    type: ActionTypes.SET_PRODUCTS,
+    payload
+})
+
 export const Actions = {
     setRows,
     updateRow,
     deleteRow,
     setPositions,
     setProductCategories,
-    setProductVendors
+    setProductVendors,
+    setProcurementProducts,
+    setProviders,
+    setStaff,
+    setProducts
 }

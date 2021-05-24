@@ -18,7 +18,10 @@ import DBProductVendors from '../utils/Database/ProductVendors'
 import DBClients from '../utils/Database/Clients'
 import DBProducts from '../utils/Database/Products'
 import DBProductCategories from '../utils/Database/ProductCategories'
+import DBProcurement from '../utils/Database/Procurement'
 import Products from './Sections/Products'
+import Procurement from './Sections/Procurement'
+import DBProvider from '../utils/Database/Providers'
 
 
 const App = (props) => {
@@ -52,7 +55,12 @@ const App = (props) => {
                 props.getProviders()
                 return <Providers />
             case 'Поставки':
-                return <ErrorPage />
+                props.setProducts()
+                props.setProviders()
+                props.getProcurement()
+                props.getProcurementProducts()
+                props.setStaff()
+                return <Procurement />
             case 'Должности':
                 props.getRowsPositions()
                 return <Positions />
@@ -123,6 +131,12 @@ const mapDispatchToProps = dispatch => {
             () => DBProductCategories.get((err, rows) => dispatch(Actions.setProductCategories(rows))),
         setProductVendors: () =>
             DBProductVendors.get((err, rows) => dispatch(Actions.setProductVendors(rows))),
+        getProcurement: () => DBProcurement.get((err, rows) => dispatch(Actions.setRows(rows))),
+        getProcurementProducts:
+            () => DBProcurement.getProcProducts((err, rows) => dispatch(Actions.setProcurementProducts(rows))),
+        setProviders: () => DBProviders.get((err, result) => dispatch(Actions.setProviders(result))),
+        setStaff: () => DBStaff.get((err, rows) => dispatch(Actions.setStaff(rows))),
+        setProducts: () => DBProducts.get((err, res) => dispatch(Actions.setProducts(res)))
     }
 }
 

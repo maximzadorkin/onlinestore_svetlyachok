@@ -11,6 +11,14 @@ const initState = {
 const reducer = (state = initState, action) => {
 
     switch (action.type) {
+        case ActionTypes.SET_PRODUCTS:
+            return {...state, products: action.payload}
+        case ActionTypes.SET_STAFF:
+            return {...state, staff: action.payload}
+        case ActionTypes.SET_PROVIDERS:
+            return {...state, providers: action.payload}
+        case ActionTypes.SET_PROCUREMENT_PRODUCTS:
+            return {...state, procurementProducts: action.payload}
         case ActionTypes.SET_PRODUCT_CATEGORIES:
             return {...state, productCategories: action.payload}
         case ActionTypes.SET_PRODUCT_VENDORS:

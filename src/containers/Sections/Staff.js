@@ -99,7 +99,9 @@ const Staff = ({rows, columns, positions, get, add, update, del}) => {
 
     const getTableRow = () => _.cloneDeep(rows).map(row => {
         if (row.hasOwnProperty('Должности')) {
-            row.Должности = row.Должности.value.join(', ')
+            row.Должности = row.Должности.value.map(val =>
+                positions.find(pos => pos.id === val).Наименование)
+                .join(', ')
         }
         return row
     })
@@ -144,7 +146,7 @@ const mapStateToProps = state => {
             {field: 'Фамилия', headerName: 'Фамилия'},
             {field: 'Телефон', headerName: 'Телефон'},
             {field: 'Email', headerName: 'Email'},
-            {field: 'Должности', headerName: 'Коды должностей'}
+            {field: 'Должности', headerName: 'Занимаемые должности'}
         ],
         positions: state.positions
     }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {connect} from 'react-redux'
 import RowModal from '../../components/RowModal'
 import ControlPanel from '../../components/ControlPanel'
@@ -9,7 +9,7 @@ import _ from 'lodash'
 
 const Products = ({rows, columns, productCategories, productVendors, get, add, update, del}) => {
 
-    const [openModal, setOpenModal] = React.useState({open: false, refactorMode: false})
+    const [openModal, setOpenModal] = useState({open: false, refactorMode: false})
     const [selectionModel, setSelectionModel] = React.useState([])
 
     const haveSelectedRow = () => {
@@ -45,7 +45,6 @@ const Products = ({rows, columns, productCategories, productVendors, get, add, u
     const getModalRow = () => {
         const refactorMode = openModal.refactorMode
         const selected = rows.find(col => col.id === selectionModel[0])
-
         return [
             {
                 label: 'id',
@@ -63,7 +62,8 @@ const Products = ({rows, columns, productCategories, productVendors, get, add, u
                 label: 'Цена',
                 value: refactorMode ? selected.Цена : '',
                 required: true,
-                readOnly: false
+                readOnly: false,
+                type: 'number'
             },
             {
                 label: 'Описание',
@@ -75,11 +75,12 @@ const Products = ({rows, columns, productCategories, productVendors, get, add, u
                 label: 'КоличествоНаСкладе',
                 value: refactorMode ? selected.КоличествоНаСкладе : '',
                 required: true,
-                readOnly: false
+                readOnly: false,
+                type: 'number'
             },
             {
                 label: 'Категории_id',
-                value: refactorMode ? [selected.Категории_id.value] : [],
+                value: refactorMode ? [selected.Категории_id] : [],
                 selectionList: productCategories.map(p => ({
                     id: p.id,
                     value: p.Наименование,
@@ -90,7 +91,7 @@ const Products = ({rows, columns, productCategories, productVendors, get, add, u
             },
             {
                 label: 'Производитель_id',
-                value: refactorMode ? [selected.Производитель_id.value] : [],
+                value: refactorMode ? [selected.Производитель_id] : [],
                 selectionList: productVendors.map(p => ({
                     id: p.id,
                     value: p.Наименование,
@@ -114,8 +115,7 @@ const Products = ({rows, columns, productCategories, productVendors, get, add, u
 
     return (
         <>
-            {
-                openModal.open &&
+            {openModal.open && (
                 <RowModal
                     open={openModal.open}
                     onClose={() => setOpenModal({open: false, refactorMode: false})}
@@ -123,7 +123,7 @@ const Products = ({rows, columns, productCategories, productVendors, get, add, u
                     refactorMode={openModal.refactorMode}
                     ButtonHandler={HandleButtonsRequest}
                 />
-            }
+            )}
             <ControlPanel
                 HandleAddRow={HandleAddRow}
                 HandleRefactorRow={HandleRefactorRow}

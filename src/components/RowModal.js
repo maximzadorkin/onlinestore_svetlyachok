@@ -11,7 +11,7 @@ import {
     TextField,
     Typography
 } from '@material-ui/core'
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import CloseModalButton from './CloseModalButton'
 import _ from 'lodash'
 
@@ -72,18 +72,22 @@ const RowModal = ({row, refactorMode, ButtonHandler, open, onClose}) => {
                 onChange={event => setValue(event.target.value)}
                 fullWidth
                 style={{marginBottom: '1rem'}}
+                type={col.hasOwnProperty('type') ? col.type : 'string'}
             />
         )
     })
 
     const select = () => getSelects(row).filter(col => !col.multiple).map(col => {
         const [value, setValue] = useState(col.value)
+        useEffect(() => { setValue(value)}, [value] )
+
         const index = row.indexOf(col)
         states[index] = {
             value,
             label: col.label,
             required: col.required
         }
+
 
         return (
             <FormControl
@@ -93,10 +97,11 @@ const RowModal = ({row, refactorMode, ButtonHandler, open, onClose}) => {
             >
                 <InputLabel>{col.label}</InputLabel>
                 <Select
-                    defaultValue={col.value}
+                    // defaultValue={col.value}
                     value={value}
                     onChange={event => setValue(event.target.value)}
                     label={col.label}
+                    readOnly={col.readOnly}
                 >
                     {col.selectionList.map(item => (
                         <MenuItem value={item.id} key={_.uniqueId()}>
@@ -158,10 +163,10 @@ const RowModal = ({row, refactorMode, ButtonHandler, open, onClose}) => {
                 height: '100%'
             }}>
                 <div style={{
-                    width: 320,
+                    width: 400,
                     backgroundColor: 'white',
                     borderRadius: 4,
-                    padding: '30px 15px'
+                    padding: '30px 30px'
                 }}>
                     <CloseModalButton handleClose={onClose}/>
                     {inputs()}
@@ -172,11 +177,16 @@ const RowModal = ({row, refactorMode, ButtonHandler, open, onClose}) => {
                             variant='contained'
                             style={{color: 'white', backgroundColor: 'limegreen'}}
                             onClick={clickHandler}
+                            disableElevation
                         >
                             {refactorMode ? 'Обновить' : 'Добавить'}
                         </Button>
                     </Box>
-                    <Box display='flex' justifyContent='center' m={1}>
+                    <Box
+                        display='flex'
+                        justifyContent='center'
+                        m={1}
+                    >
                         {
                             Error &&
                             <Typography component='span' variant='body1' color='secondary'>
