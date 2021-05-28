@@ -1,10 +1,10 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import DB from '../../utils/Database/ProductVendors'
-import Actions from '../../store/actions/products'
+import DB from '../../utils/Database/StaffPositions'
+import Actions from '../../store/actions/staff'
 import SimplePageInterface from './SimplePageInterface'
 
-class ProductVendors extends SimplePageInterface {
+class StaffPositions extends SimplePageInterface {
 
     constructor() {
         super()
@@ -43,12 +43,12 @@ class ProductVendors extends SimplePageInterface {
 }
 
 const mapStateToProps = state => ({
-    rows: state.products.vendors
+    rows: state.staff.positions
 })
 
 const mapDispatchToProps = dispatch => {
 
-    const DBGet = () => DB.get((rows) => dispatch(Actions.getProductVendors(rows)))
+    const DBGet = () => DB.get((rows) => dispatch(Actions.getStaffPositions(rows)))
 
     return {
         get: DBGet,
@@ -58,4 +58,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProductVendors)
+export default connect(mapStateToProps, mapDispatchToProps)(StaffPositions)

@@ -3,7 +3,7 @@ import {_getDataBaseConnection} from './Connector'
 const get = (callback = null) => {
     const connection = _getDataBaseConnection()
     connection.connect()
-    connection.query('SELECT * FROM ?', callback)
+    connection.query('SELECT * FROM ?', (_err, rows) => callback(rows))
     connection.end()
 }
 

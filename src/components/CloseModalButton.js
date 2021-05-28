@@ -4,7 +4,7 @@ import React from 'react'
 const CloseModalButton = ({handleClose}) => (
     <Box display='flex' justifyContent='flex-end' mb={2}>
         <Button
-            // size='small'
+            size='small'
             variant='contained'
             style={{
                 color: 'white',

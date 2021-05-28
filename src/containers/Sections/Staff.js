@@ -1,171 +1,129 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import RowModal from '../../components/RowModal'
-import ControlPanel from '../../components/ControlPanel'
-import Table from '../../components/Table'
 import DB from '../../utils/Database/Staff'
-import {Actions} from '../../store/actions'
-import _ from 'lodash'
+import DBStaffPositions from '../../utils/Database/StaffPositions'
+import Actions from '../../store/actions/staff'
+import SimplePageInterface from './SimplePageInterface'
 
-const Staff = ({rows, columns, positions, get, add, update, del}) => {
+class Staff extends SimplePageInterface {
 
-    const [openModal, setOpenModal] = React.useState({open: false, refactorMode: false})
-    const [selectionModel, setSelectionModel] = React.useState([])
-
-    const haveSelectedRow = () => {
-        const selected = rows.find(col => col.id === selectionModel[0])
-        const haveSelected = selected !== undefined
-        return haveSelected
+    constructor() {
+        super()
+        this.state = {
+            ...this.state,
+            columns: [
+                {field: 'id', headerName: 'id'},
+                {field: 'Имя', headerName: 'Имя'},
+                {field: 'Отчество', headerName: 'Отчество'},
+                {field: 'Фамилия', headerName: 'Фамилия'},
+                {field: 'Телефон', headerName: 'Телефон'},
+                {field: 'Email', headerName: 'Email'},
+                {field: 'Должности', headerName: 'Занимаемые должности'},
+                {field: 'Login', headerName: 'Login'},
+                {field: 'Password', headerName: 'Password'},
+            ]
+        }
     }
 
-
-    const HandleButtonsRequest = row => {
-        if (openModal.refactorMode)
-            update(row)
-        else
-            add(row)
-    }
-    const HandleAddRow = () => {
-        setOpenModal({open: true, refactorMode: false})
-    }
-    const HandleRefactorRow = () => {
-        if (!haveSelectedRow()) return
-        setOpenModal({open: true, refactorMode: true})
-    }
-    const HandlerDeleteRow = () => {
-        const row = rows.find(row => row.id === selectionModel[0])
-        del(row)
-    }
-    const HandleGetRows = () => {
-        return get()
+    componentDidMount = () => {
+        this.props.get()
+        this.props.getPositions()
     }
 
+    getTableRows = () => this.props.rows.map(row => ({
+        ...row,
+        Должности: row.Должности.map(r =>
+            this.props.positions.find(pos => pos.id === r.Должности_id).Наименование)
+    }))
 
-
-    const getModalRow = () => {
-        const refactorMode = openModal.refactorMode
-        const selected = rows.find(col => col.id === selectionModel[0])
+    getSelectedRow = (RefMode = null) => {
+        const SelectRow = this.state.SelectRow
+        // SelectRow.Должности = SelectRow.Должности.map(sp => ({
+        //     id: this.props.positions.find(pos => pos.Наименование === sp).id
+        // }))
+        console.log(SelectRow)
 
         return [
             {
                 label: 'id',
-                value: refactorMode ? selected.id : 'автогенерируемый',
+                value: RefMode ? SelectRow.id : 'автогенерируемый',
                 required: true,
                 readOnly: true
             },
             {
                 label: 'Имя',
-                value: refactorMode ? selected.Имя : '',
+                value: RefMode ? SelectRow.Имя : '',
                 required: true,
                 readOnly: false
             },
             {
                 label: 'Отчество',
-                value: refactorMode ? selected.Отчество : '',
+                value: RefMode ? SelectRow.Отчество : '',
                 required: false,
                 readOnly: false
             },
             {
                 label: 'Фамилия',
-                value: refactorMode ? selected.Фамилия : '',
+                value: RefMode ? SelectRow.Фамилия : '',
                 required: true,
                 readOnly: false
             },
             {
                 label: 'Телефон',
-                value: refactorMode ? selected.Телефон : '',
+                value: RefMode ? SelectRow.Телефон : '',
                 required: false,
                 readOnly: false
             },
             {
                 label: 'Email',
-                value: refactorMode ? selected.Email : '',
+                value: RefMode ? SelectRow.Email : '',
                 required: false,
                 readOnly: false
             },
             {
                 label: 'Должности',
-                value: refactorMode ? selected.Должности.value : [], // array
-                selectionList: positions.map(p => ({
+                value: RefMode ? SelectRow.Должности : [], // array
+                selectionList: this.props.positions.map(p => ({
                     id: p.id,
                     value: p.Наименование,
                 })),
                 multiple: true,
                 required: true,
                 readOnly: false
-            }
+            },
+            {
+                label: 'Login',
+                value: RefMode ? SelectRow.Login : '',
+                required: true,
+                readOnly: false
+            },
+            {
+                label: 'Password',
+                value: RefMode ? SelectRow.Password : '',
+                required: false,
+                readOnly: false
+            },
         ]
     }
 
-    const getTableRow = () => _.cloneDeep(rows).map(row => {
-        if (row.hasOwnProperty('Должности')) {
-            row.Должности = row.Должности.value.map(val =>
-                positions.find(pos => pos.id === val).Наименование)
-                .join(', ')
-        }
-        return row
-    })
-
-    return (
-        <>
-            {
-                openModal.open &&
-                <RowModal
-                    open={openModal.open}
-                    onClose={() => setOpenModal({open: false, refactorMode: false})}
-                    row={getModalRow()}
-                    refactorMode={openModal.refactorMode}
-                    ButtonHandler={HandleButtonsRequest}
-                />
-            }
-            <ControlPanel
-                HandleAddRow={HandleAddRow}
-                HandleRefactorRow={HandleRefactorRow}
-                HandlerDeleteRow={HandlerDeleteRow}
-                getRows={HandleGetRows}
-            />
-            <div style={{ height: 650, width: '100%' }}>
-                <Table
-                    rows={getTableRow()}
-                    columns={columns}
-                    selectionModel={selectionModel}
-                    setSelectionModel={setSelectionModel}
-                />
-            </div>
-        </>
-    )
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = state => ({
+    rows: state.staff.staff,
+    positions: state.staff.positions,
+})
+
+const mapDispatchToProps = dispatch => {
+
+    const DBGet = () => DB.get(rows => dispatch(Actions.getStaff(rows)))
+
     return {
-        rows: state.rows,
-        columns: [
-            {field: 'id', headerName: 'id'},
-            {field: 'Имя', headerName: 'Имя'},
-            {field: 'Отчество', headerName: 'Отчество'},
-            {field: 'Фамилия', headerName: 'Фамилия'},
-            {field: 'Телефон', headerName: 'Телефон'},
-            {field: 'Email', headerName: 'Email'},
-            {field: 'Должности', headerName: 'Занимаемые должности'}
-        ],
-        positions: state.positions
+        get: DBGet,
+        add: row => DB.add(row, DBGet),
+        update: row => DB.update(row, DBGet),
+        delete: row => DB.delete(row, DBGet),
+        getPositions: () => DBStaffPositions.get(rows => dispatch(Actions.getStaffPositions(rows)))
     }
 }
-
-const mapDispatchToProps = dispatch => ({
-    get: () => DB.get((err, rows) => dispatch(Actions.setRows(rows))),
-    add: row => DB.add(
-        row,
-        () => DB.get((err, rows) => dispatch(Actions.setRows(rows)))
-    ),
-    update: row => DB.update(
-        row,
-        () => DB.get((err, rows) => dispatch(Actions.setRows(rows)))
-    ),
-    del: row => {
-        DB.del(row)
-        dispatch(Actions.deleteRow(row))
-    },
-})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Staff)

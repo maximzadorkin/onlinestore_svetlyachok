@@ -20,6 +20,8 @@ const getSelects = items => items.filter(item => item.value instanceof Array)
 
 const RowModal = ({row, refactorMode, ButtonHandler, open, onClose}) => {
 
+    if (!row || row.length === 0) return null
+
     const [Error, SetError] = useState(false)
     const states = {}
 
@@ -63,7 +65,6 @@ const RowModal = ({row, refactorMode, ButtonHandler, open, onClose}) => {
 
         return (
             <TextField
-                // key={_.uniqueId()}
                 variant='outlined'
                 label={col.label}
                 defaultValue={value}
@@ -130,7 +131,7 @@ const RowModal = ({row, refactorMode, ButtonHandler, open, onClose}) => {
                     fullWidth
                     style={{marginBottom: '1rem'}}
                 >
-                    <InputLabel>{col.label}}</InputLabel>
+                    <InputLabel>{col.label}</InputLabel>
                     <Select
                         multiple={col.multiple}
                         defaultValue={value}

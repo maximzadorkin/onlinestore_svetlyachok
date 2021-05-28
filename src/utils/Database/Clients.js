@@ -3,31 +3,56 @@ import {_getDataBaseConnection} from './Connector'
 const get = (callback = null) => {
     const connection = _getDataBaseConnection()
     connection.connect()
-    connection.query('SELECT * FROM Клиенты', callback)
+    const currentCallback = (_err, rows) => callback(rows)
+    const queryText = `
+        select * from Клиенты
+    `
+    connection.query(queryText, currentCallback)
     connection.end()
 }
 
 const add = (row, callback = null) => {
     const connection = _getDataBaseConnection()
     connection.connect()
-    const values = `'${row.Имя}', '${row.Отчество}', '${row.Фамилия}', '${row.Телефон}', '${row.Email}'`
-    connection.query(`insert into клиенты(Имя, Отчество, Фамилия, Телефон, Email) values(${values});`, callback)
+    const queryText = `
+        insert into клиенты(Имя, Отчество, Фамилия, Телефон, Email) 
+        values(
+            '${row.Имя}',
+            '${row.Отчество}',
+            '${row.Фамилия}',
+            '${row.Телефон}',
+            '${row.Email}'
+        );
+    `
+    connection.query(queryText, callback)
     connection.end()
 }
 
 const update = (row, callback = null) => {
     const connection = _getDataBaseConnection()
     connection.connect()
-    const values = `Имя='${row.Имя}', Отчество='${row.Отчество}', Фамилия='${row.Фамилия}', Телефон='${row.Телефон}', Email='${row.Email}'`
-    connection.query(`update клиенты set ${values} where id='${row.id}';`, callback)
+    const queryText = `
+        update клиенты 
+        set Имя='${row.Имя}', 
+            Отчество='${row.Отчество}',
+            Фамилия='${row.Фамилия}',
+            Телефон='${row.Телефон}',
+            Email='${row.Email}' 
+        where id='${row.id}';
+    `
+    connection.query(queryText, callback)
     connection.end()
 }
 
 const del = (row, callback = null) => {
     const connection = _getDataBaseConnection()
     connection.connect()
-    connection.query(`delete from клиенты where id='${row.id}';`, callback)
+    const queryText = `
+        delete from клиенты 
+        where id='${row.id}';
+    `
+    connection.query(queryText, callback)
     connection.end()
 }
 
-export default { get, add, update, del }
+export default { get, add, update, delete: del }

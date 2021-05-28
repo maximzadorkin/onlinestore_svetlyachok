@@ -1,11 +1,9 @@
-import React from 'react'
-import {connect} from 'react-redux'
-import DB from '../../utils/Database/ProductVendors'
-import Actions from '../../store/actions/products'
 import SimplePageInterface from './SimplePageInterface'
+import {connect} from 'react-redux'
+import DB from '../../utils/Database/Suppliers'
+import Actions from '../../store/actions/supplies'
 
-class ProductVendors extends SimplePageInterface {
-
+class Suppliers extends SimplePageInterface {
     constructor() {
         super()
         this.state = {
@@ -13,7 +11,7 @@ class ProductVendors extends SimplePageInterface {
             columns: [
                 {field: 'id', headerName: 'id'},
                 {field: 'Наименование', headerName: 'Наименование'}
-            ]
+            ],
         }
     }
 
@@ -39,23 +37,21 @@ class ProductVendors extends SimplePageInterface {
             }
         ]
     }
-
 }
 
 const mapStateToProps = state => ({
-    rows: state.products.vendors
+    rows: state.supplies.suppliers
 })
-
 const mapDispatchToProps = dispatch => {
 
-    const DBGet = () => DB.get((rows) => dispatch(Actions.getProductVendors(rows)))
+    const DBGet = () => DB.get(rows => dispatch(Actions.getSuppliers(rows)))
 
     return {
         get: DBGet,
-        add: (row) => DB.add(row, DBGet),
-        update: (row) => DB.update(row, DBGet),
-        delete: (row) => DB.delete(row, DBGet)
+        add: row => DB.add(row, DBGet),
+        update: row => DB.update(row, DBGet),
+        delete: row => DB.delete(row, DBGet),
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProductVendors)
+export default connect(mapStateToProps, mapDispatchToProps)(Suppliers)

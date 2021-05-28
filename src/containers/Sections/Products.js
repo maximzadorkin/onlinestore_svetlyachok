@@ -1,178 +1,122 @@
-import React, {useState} from 'react'
+import SimplePageInterface from './SimplePageInterface'
 import {connect} from 'react-redux'
-import RowModal from '../../components/RowModal'
-import ControlPanel from '../../components/ControlPanel'
-import Table from '../../components/Table'
 import DB from '../../utils/Database/Products'
-import {Actions} from '../../store/actions'
-import _ from 'lodash'
+import Actions from '../../store/actions/products'
+import DBCategories from '../../utils/Database/ProductCategories'
+import DBVendors from '../../utils/Database/ProductVendors'
 
-const Products = ({rows, columns, productCategories, productVendors, get, add, update, del}) => {
-
-    const [openModal, setOpenModal] = useState({open: false, refactorMode: false})
-    const [selectionModel, setSelectionModel] = React.useState([])
-
-    const haveSelectedRow = () => {
-        const selected = rows.find(col => col.id === selectionModel[0])
-        const haveSelected = selected !== undefined
-        return haveSelected
+class Products extends SimplePageInterface {
+    constructor() {
+        super()
+        this.state = {
+            ...this.state,
+            columns: [
+                { field: 'id', headerName: 'id' },
+                { field: 'Наименование', headerName: 'Наименование' },
+                { field: 'Цена', headerName: 'Цена' },
+                { field: 'Описание', headerName: 'Описание' },
+                { field: 'КоличествоНаСкладе', headerName: 'Количество на складе' },
+                { field: 'Категории_id', headerName: 'Категория' },
+                { field: 'Производитель_id', headerName: 'Производитель' },
+            ],
+        }
     }
 
-
-    const HandleButtonsRequest = row => {
-        if (openModal.refactorMode)
-            update(row)
-        else
-            add(row)
-    }
-    const HandleAddRow = () => {
-        setOpenModal({open: true, refactorMode: false})
-    }
-    const HandleRefactorRow = () => {
-        if (!haveSelectedRow()) return
-        setOpenModal({open: true, refactorMode: true})
-    }
-    const HandlerDeleteRow = () => {
-        const row = rows.find(row => row.id === selectionModel[0])
-        del(row)
-    }
-    const HandleGetRows = () => {
-        return get()
+    componentDidMount = () => {
+        this.props.get()
+        this.props.getVendors()
+        this.props.getCategories()
     }
 
+    getSelectedRow = (RefMode = null) => {
+        const SelectRow = this.state.SelectRow
 
-
-    const getModalRow = () => {
-        const refactorMode = openModal.refactorMode
-        const selected = rows.find(col => col.id === selectionModel[0])
         return [
             {
                 label: 'id',
-                value: refactorMode ? selected.id : 'автогенерируемый',
+                value: RefMode ? SelectRow.id : 'автогенерируемый',
                 required: true,
-                readOnly: true
+                readOnly: true,
+                selectionList: [],
+                multiple: false,
             },
             {
                 label: 'Наименование',
-                value: refactorMode ? selected.Наименование : '',
+                value: RefMode ? SelectRow.Наименование : '',
                 required: true,
-                readOnly: false
+                readOnly: false,
+                selectionList: [],
+                multiple: false,
             },
             {
                 label: 'Цена',
-                value: refactorMode ? selected.Цена : '',
+                value: RefMode ? SelectRow.Цена : '',
                 required: true,
                 readOnly: false,
-                type: 'number'
+                selectionList: [],
+                multiple: false,
+                type: 'number',
             },
             {
                 label: 'Описание',
-                value: refactorMode ? selected.Описание : '',
+                value: RefMode ? SelectRow.Описание : '',
                 required: false,
-                readOnly: false
+                readOnly: false,
+                selectionList: [],
+                multiple: false,
             },
             {
                 label: 'КоличествоНаСкладе',
-                value: refactorMode ? selected.КоличествоНаСкладе : '',
+                value: RefMode ? SelectRow.КоличествоНаСкладе : '',
                 required: true,
                 readOnly: false,
-                type: 'number'
+                selectionList: [],
+                multiple: false,
+                type: 'number',
             },
             {
                 label: 'Категории_id',
-                value: refactorMode ? [selected.Категории_id] : [],
-                selectionList: productCategories.map(p => ({
+                value: RefMode ? [SelectRow.Категории_id] : [],
+                selectionList: this.props.categories.map((p) => ({
                     id: p.id,
                     value: p.Наименование,
                 })),
                 multiple: false,
                 required: true,
-                readOnly: false
+                readOnly: false,
             },
             {
                 label: 'Производитель_id',
-                value: refactorMode ? [selected.Производитель_id] : [],
-                selectionList: productVendors.map(p => ({
+                value: RefMode ? [SelectRow.Производитель_id] : [],
+                selectionList: this.props.vendors.map((p) => ({
                     id: p.id,
                     value: p.Наименование,
                 })),
                 multiple: false,
                 required: true,
-                readOnly: false
-            }
+                readOnly: false,
+            },
         ]
     }
-
-    const getTableRow = () => _.cloneDeep(rows).map(row => {
-        row.Производитель_id = productVendors.find(pv => pv.id === row.Производитель_id)
-        row.Категории_id = productCategories.find(pc => pc.id === row.Категории_id)
-        if (row.Производитель_id instanceof Object)
-            row.Производитель_id = row.Производитель_id.Наименование
-        if (row.Категории_id instanceof Object)
-            row.Категории_id = row.Категории_id.Наименование
-        return row
-    })
-
-    return (
-        <>
-            {openModal.open && (
-                <RowModal
-                    open={openModal.open}
-                    onClose={() => setOpenModal({open: false, refactorMode: false})}
-                    row={getModalRow()}
-                    refactorMode={openModal.refactorMode}
-                    ButtonHandler={HandleButtonsRequest}
-                />
-            )}
-            <ControlPanel
-                HandleAddRow={HandleAddRow}
-                HandleRefactorRow={HandleRefactorRow}
-                HandlerDeleteRow={HandlerDeleteRow}
-                getRows={HandleGetRows}
-            />
-            <div style={{ height: 650, width: '100%' }}>
-                <Table
-                    rows={getTableRow()}
-                    columns={columns}
-                    selectionModel={selectionModel}
-                    setSelectionModel={setSelectionModel}
-                />
-            </div>
-        </>
-    )
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = state => ({
+    rows: state.products.products,
+    categories: state.products.categories,
+    vendors: state.products.vendors
+})
+const mapDispatchToProps = dispatch => {
+
+    const DBGet = () => DB.get(rows => dispatch(Actions.getProducts(rows)))
+
     return {
-        rows: state.rows,
-        columns: [
-            {field: 'id', headerName: 'id'},
-            {field: 'Наименование', headerName: 'Наименование'},
-            {field: 'Цена', headerName: 'Цена'},
-            {field: 'Описание', headerName: 'Описание'},
-            {field: 'КоличествоНаСкладе', headerName: 'Количество на складе'},
-            {field: 'Категории_id', headerName: 'Категория'},
-            {field: 'Производитель_id', headerName: 'Производитель'}
-        ],
-        productCategories: state.productCategories,
-        productVendors: state.productVendors
+        get: DBGet,
+        add: row => DB.add(row, DBGet),
+        update: row => DB.update(row, DBGet),
+        delete: row => DB.delete(row, DBGet),
+        getCategories: () => DBCategories.get(rows => dispatch(Actions.getProductCategories(rows))),
+        getVendors: () => DBVendors.get(rows => dispatch(Actions.getProductVendors(rows)))
     }
 }
-
-const mapDispatchToProps = dispatch => ({
-    get: () => DB.get((err, rows) => dispatch(Actions.setRows(rows))),
-    add: row => DB.add(
-        row,
-        () => DB.get((err, rows) => dispatch(Actions.setRows(rows)))
-    ),
-    update: row => DB.update(
-        row,
-        () => DB.get((err, rows) => dispatch(Actions.setRows(rows)))
-    ),
-    del: row => {
-        DB.del(row)
-        dispatch(Actions.deleteRow(row))
-    },
-})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Products)

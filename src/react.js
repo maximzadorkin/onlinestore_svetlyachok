@@ -1,9 +1,9 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import App from './containers/App'
-import {applyMiddleware, createStore} from 'redux'
+import { applyMiddleware, createStore } from 'redux'
 import reducer from './store/reducer'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 
 function render() {
@@ -13,7 +13,7 @@ function render() {
             <App />
         </Provider>
     )
-    const rootNode = document.body.querySelector("#root")
+    const rootNode = document.body.querySelector('#root')
 
     ReactDOM.render(app, rootNode)
 }
