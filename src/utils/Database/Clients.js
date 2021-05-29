@@ -5,7 +5,7 @@ const get = (callback = null) => {
     connection.connect()
     const currentCallback = (_err, rows) => callback(rows)
     const queryText = `
-        select * from Клиенты
+        select * from Клиенты;
     `
     connection.query(queryText, currentCallback)
     connection.end()

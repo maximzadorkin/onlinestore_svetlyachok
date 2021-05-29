@@ -4,6 +4,7 @@ import DB from '../../utils/Database/Staff'
 import DBStaffPositions from '../../utils/Database/StaffPositions'
 import Actions from '../../store/actions/staff'
 import SimplePageInterface from './SimplePageInterface'
+import _ from 'lodash'
 
 class Staff extends SimplePageInterface {
 
@@ -30,82 +31,103 @@ class Staff extends SimplePageInterface {
         this.props.getPositions()
     }
 
-    getTableRows = () => this.props.rows.map(row => ({
+    getTableRows = () => _.cloneDeep(this.props.rows).map(row => ({
         ...row,
         Должности: row.Должности.map(r =>
             this.props.positions.find(pos => pos.id === r.Должности_id).Наименование)
     }))
 
     getSelectedRow = (RefMode = null) => {
-        const SelectRow = this.state.SelectRow
-        // SelectRow.Должности = SelectRow.Должности.map(sp => ({
-        //     id: this.props.positions.find(pos => pos.Наименование === sp).id
-        // }))
-        console.log(SelectRow)
+        let SelectRow
+        if (RefMode) {
+            SelectRow = _.cloneDeep(this.props.rows).find(c => this.state.SelectRow.id === c.id)
+            SelectRow.Должности = SelectRow.Должности.map(pos => pos.Должности_id)
+        }
 
         return [
             {
                 label: 'id',
                 value: RefMode ? SelectRow.id : 'автогенерируемый',
+                selectionList: [],
                 required: true,
-                readOnly: true
+                readOnly: true,
+                multiple: false,
+                component: 'textField'
             },
             {
                 label: 'Имя',
                 value: RefMode ? SelectRow.Имя : '',
+                selectionList: [],
                 required: true,
-                readOnly: false
+                readOnly: false,
+                multiple: false,
+                component: 'textField'
             },
             {
                 label: 'Отчество',
                 value: RefMode ? SelectRow.Отчество : '',
+                selectionList: [],
                 required: false,
-                readOnly: false
+                readOnly: false,
+                multiple: false,
+                component: 'textField'
             },
             {
                 label: 'Фамилия',
                 value: RefMode ? SelectRow.Фамилия : '',
+                selectionList: [],
                 required: true,
-                readOnly: false
+                readOnly: false,
+                multiple: false,
+                component: 'textField'
             },
             {
                 label: 'Телефон',
                 value: RefMode ? SelectRow.Телефон : '',
+                selectionList: [],
                 required: false,
-                readOnly: false
+                readOnly: false,
+                multiple: false,
+                component: 'textField'
             },
             {
                 label: 'Email',
                 value: RefMode ? SelectRow.Email : '',
+                selectionList: [],
                 required: false,
-                readOnly: false
+                readOnly: false,
+                multiple: false,
+                component: 'textField'
             },
             {
                 label: 'Должности',
                 value: RefMode ? SelectRow.Должности : [], // array
                 selectionList: this.props.positions.map(p => ({
-                    id: p.id,
-                    value: p.Наименование,
+                    value: p.id,
+                    display: p.Наименование
                 })),
-                multiple: true,
                 required: true,
-                readOnly: false
+                readOnly: false,
+                component: 'multipleSelect'
             },
             {
                 label: 'Login',
                 value: RefMode ? SelectRow.Login : '',
+                selectionList: [],
                 required: true,
-                readOnly: false
+                readOnly: false,
+                component: 'textField'
             },
             {
                 label: 'Password',
                 value: RefMode ? SelectRow.Password : '',
+                selectionList: [],
                 required: false,
-                readOnly: false
+                readOnly: false,
+                component: 'textField'
             },
         ]
     }
-
 }
 
 const mapStateToProps = state => ({

@@ -1,17 +1,13 @@
-import {Box, Button} from '@material-ui/core'
+import { Box, Button } from '@material-ui/core'
 import React from 'react'
 
-const CloseModalButton = ({handleClose}) => (
-    <Box display='flex' justifyContent='flex-end' mb={2}>
+const CloseModalButton = ({ handleClose }) => (
+    <Box width='100%' display='flex' justifyContent='flex-start' mb={3}>
         <Button
             size='small'
             variant='contained'
-            style={{
-                color: 'white',
-                backgroundColor: 'orangered',
-                borderColor: 'orangered',
-                fontSize: '40px'
-            }}
+            style={{ fontSize: '40px' }}
+            color='secondary'
             disableElevation
             onClick={handleClose}
         >

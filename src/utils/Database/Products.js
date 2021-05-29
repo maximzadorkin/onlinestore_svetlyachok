@@ -1,10 +1,10 @@
-import {_getDataBaseConnection} from './Connector'
+import { _getDataBaseConnection } from './Connector'
 
 const get = (callback = null) => {
     const connection = _getDataBaseConnection()
     connection.connect()
     const currentCallback = (_err, rows) => callback(rows)
-    const queryText = `select * from Товары`
+    const queryText = `select * from Товары;`
     connection.query(queryText, currentCallback)
     connection.end()
 }
@@ -25,8 +25,8 @@ const add = (row, callback = null) => {
             '${row.Цена}',
             '${row.Описание}',
             '${row.КоличествоНаСкладе}',
-            '${row.Категории_id}',
-            '${row.Производитель_id}'
+            ${row.Категории_id},
+            ${row.Производитель_id}
         );
     `
     connection.query(queryText, callback)
@@ -42,9 +42,9 @@ const update = (row, callback = null) => {
             Цена='${row.Цена}',
             Описание='${row.Описание}',
             КоличествоНаСкладе='${row.КоличествоНаСкладе}',
-            Категории_id='${row.Категории_id}',
-            Производитель_id='${row.Производитель_id}'
-        where id='${row.id}';
+            Категории_id=${row.Категории_id},
+            Производитель_id=${row.Производитель_id}
+        where id=${row.id};
     `
     connection.query(queryText, callback)
     connection.end()
@@ -53,7 +53,10 @@ const update = (row, callback = null) => {
 const del = (row, callback = null) => {
     const connection = _getDataBaseConnection()
     connection.connect()
-    const queryText = `delete from Товары where id='${row.id}';`
+    const queryText = `
+        delete from Товары
+        where id=${row.id};
+    `
     connection.query(queryText, callback)
     connection.end()
 }

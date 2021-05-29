@@ -27,7 +27,7 @@ class StaffPositions extends SimplePageInterface {
                 required: true,
                 readOnly: true,
                 selectionList: [],
-                multiple: false,
+                component: 'textField'
             },
             {
                 label: 'Наименование',
@@ -35,7 +35,7 @@ class StaffPositions extends SimplePageInterface {
                 required: true,
                 readOnly: false,
                 selectionList: [],
-                multiple: false,
+                component: 'textField'
             }
         ]
     }

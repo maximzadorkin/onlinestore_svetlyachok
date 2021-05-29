@@ -1,9 +1,9 @@
 import React from 'react'
 import {Box} from '@material-ui/core'
 import Table from '../../components/Table'
-import RowModal from '../../components/RowModal'
 import ControlPanel, {Roles} from '../../components/ControlPanel'
 import _ from 'lodash'
+import ModalRowHandler from '../../components/ModalRowHandler'
 
 // props
 // get, add, update, delete
@@ -73,10 +73,13 @@ class SimplePageInterface extends React.Component {
     }
 
     HandlerButtonModal = (row) => {
+        const currentRowObject = {}
+        row.forEach(col => currentRowObject[col.label] = col.value)
+
         if (this.state.RefactorMode)
-            this.props.update(row)
+            this.props.update(currentRowObject)
         else
-            this.props.add(row)
+            this.props.add(currentRowObject)
         this.setState({ShowModal: false, RefactorMode: false})
     }
 
@@ -98,12 +101,12 @@ class SimplePageInterface extends React.Component {
                     setSelectionModel={(selectionModel) => this.setState({selectionModel})}
                 />
                 {this.state.ShowModal && (
-                    <RowModal
-                        refactorMode={this.state.RefactorMode}
-                        onClose={() => this.setState({ShowModal: false, RefactorMode: false})}
-                        ButtonHandler={this.HandlerButtonModal}
+                    <ModalRowHandler
                         open={this.state.ShowModal}
+                        onClose={() => this.setState({ShowModal: false, RefactorMode: false})}
                         row={this.state.ModalOptions}
+                        RefactorMode={this.state.RefactorMode}
+                        ButtonHandler={this.HandlerButtonModal}
                     />
                 )}
             </Box>
@@ -111,4 +114,4 @@ class SimplePageInterface extends React.Component {
     }
 }
 
-export default SimplePageInterface
+export default SimplePageInterface  

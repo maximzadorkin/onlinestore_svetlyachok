@@ -28,50 +28,56 @@ class Clients extends SimplePageInterface {
             {
                 label: 'id',
                 value: RefMode ? SelectRow.id : 'автогенерируемый',
+                selectionList: [],
                 required: true,
                 readOnly: true,
-                selectionList: [],
                 multiple: false,
+                component: 'textField'
             },
             {
                 label: 'Имя',
                 value: RefMode ? SelectRow.Имя : '',
+                selectionList: [],
                 required: true,
                 readOnly: false,
-                selectionList: [],
                 multiple: false,
+                component: 'textField'
             },
             {
                 label: 'Отчество',
                 value: RefMode ? SelectRow.Отчество : '',
+                selectionList: [],
                 required: false,
                 readOnly: false,
-                selectionList: [],
                 multiple: false,
+                component: 'textField'
             },
             {
                 label: 'Фамилия',
                 value: RefMode ? SelectRow.Фамилия : '',
+                selectionList: [],
                 required: true,
                 readOnly: false,
-                selectionList: [],
                 multiple: false,
+                component: 'textField'
             },
             {
                 label: 'Телефон',
                 value: RefMode ? SelectRow.Телефон : '',
+                selectionList: [],
                 required: false,
                 readOnly: false,
-                selectionList: [],
                 multiple: false,
+                component: 'textField'
             },
             {
                 label: 'Email',
                 value: RefMode ? SelectRow.Email : '',
+                selectionList: [],
                 required: false,
                 readOnly: false,
-                selectionList: [],
                 multiple: false,
+                component: 'textField'
             }
         ]
     }

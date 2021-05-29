@@ -1,9 +1,10 @@
 import SimplePageInterface from './SimplePageInterface'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import DB from '../../utils/Database/Products'
 import Actions from '../../store/actions/products'
 import DBCategories from '../../utils/Database/ProductCategories'
 import DBVendors from '../../utils/Database/ProductVendors'
+import _ from 'lodash'
 
 class Products extends SimplePageInterface {
     constructor() {
@@ -28,73 +29,85 @@ class Products extends SimplePageInterface {
         this.props.getCategories()
     }
 
+    getTableRows = () => _.cloneDeep(this.props.rows).map(row => {
+        row.Категории_id = this.props.categories
+            .find(cat => cat.id === row.Категории_id)?.Наименование
+
+        row.Производитель_id = this.props.vendors
+            .find(vend => vend.id === row.Производитель_id)?.Наименование
+
+        return row
+    })
+
     getSelectedRow = (RefMode = null) => {
-        const SelectRow = this.state.SelectRow
+        let SelectRow
+        if (RefMode)
+            SelectRow = _.cloneDeep(this.props.rows).find(c => this.state.SelectRow.id === c.id)
 
         return [
             {
                 label: 'id',
                 value: RefMode ? SelectRow.id : 'автогенерируемый',
+                selectionList: [],
                 required: true,
                 readOnly: true,
-                selectionList: [],
-                multiple: false,
+                component: 'textField'
             },
             {
                 label: 'Наименование',
                 value: RefMode ? SelectRow.Наименование : '',
+                selectionList: [],
                 required: true,
                 readOnly: false,
-                selectionList: [],
-                multiple: false,
+                component: 'textField'
             },
             {
                 label: 'Цена',
                 value: RefMode ? SelectRow.Цена : '',
+                selectionList: [],
                 required: true,
                 readOnly: false,
-                selectionList: [],
-                multiple: false,
                 type: 'number',
+                component: 'textField',
             },
             {
                 label: 'Описание',
                 value: RefMode ? SelectRow.Описание : '',
+                selectionList: [],
                 required: false,
                 readOnly: false,
-                selectionList: [],
-                multiple: false,
+                component: 'textField',
             },
             {
                 label: 'КоличествоНаСкладе',
                 value: RefMode ? SelectRow.КоличествоНаСкладе : '',
+                selectionList: [],
                 required: true,
                 readOnly: false,
-                selectionList: [],
-                multiple: false,
                 type: 'number',
+                component: 'textField',
             },
             {
                 label: 'Категории_id',
                 value: RefMode ? [SelectRow.Категории_id] : [],
                 selectionList: this.props.categories.map((p) => ({
-                    id: p.id,
-                    value: p.Наименование,
+                    value: p.id,
+                    display: p.Наименование,
                 })),
-                multiple: false,
                 required: true,
                 readOnly: false,
+                component: 'select',
             },
             {
                 label: 'Производитель_id',
                 value: RefMode ? [SelectRow.Производитель_id] : [],
                 selectionList: this.props.vendors.map((p) => ({
-                    id: p.id,
-                    value: p.Наименование,
+                    value: p.id,
+                    display: p.Наименование
                 })),
-                multiple: false,
                 required: true,
                 readOnly: false,
+                component: 'select',
             },
         ]
     }

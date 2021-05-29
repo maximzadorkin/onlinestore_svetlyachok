@@ -1,30 +1,49 @@
-import {_getDataBaseConnection} from './Connector'
+import { _getDataBaseConnection } from './Connector'
 
 const get = (callback = null) => {
     const connection = _getDataBaseConnection()
     connection.connect()
-    connection.query('SELECT * FROM производители', (_err, rows) => callback(rows))
+    const queryText = `
+        SELECT * FROM производители;
+    `
+    connection.query(queryText, (_err, rows) => callback(rows))
     connection.end()
 }
 
 const add = (row, callback = null) => {
     const connection = _getDataBaseConnection()
     connection.connect()
-    connection.query(`insert into производители(Наименование) values('${row.Наименование}');`, callback)
+    const queryText = `
+        insert into производители(
+            Наименование
+        ) values(
+            '${row.Наименование}'
+        );
+    `
+    connection.query(queryText, callback)
     connection.end()
 }
 
 const update = (row, callback = null) => {
     const connection = _getDataBaseConnection()
     connection.connect()
-    connection.query(`update производители set Наименование='${row.Наименование}' where id=${row.id};`, callback)
+    const queryText = `
+        update производители
+        set Наименование='${row.Наименование}'
+        where id=${row.id};
+    `
+    connection.query(queryText, callback)
     connection.end()
 }
 
 const del = (row, callback = null) => {
     const connection = _getDataBaseConnection()
     connection.connect()
-    connection.query(`delete from производители where id=${row.id};`, callback)
+    const queryText = `
+        delete from производители
+        where id=${row.id};
+    `
+    connection.query(queryText, callback)
     connection.end()
 }
 

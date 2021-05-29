@@ -3,10 +3,10 @@ import { DataGrid } from '@material-ui/data-grid'
 
 const SetWidth = (columns) => columns.map((val) => ({
     ...val,
-    width: 250
+    width: val.width ? val.width : 250
 }))
 
-const Table = ({rows, columns, onRowClick, selectionModel, setSelectionModel}) => {
+const Table = ({ rows, columns, onRowClick, selectionModel, setSelectionModel }) => {
     const onChangeSelection = (newSelection) => setSelectionModel(newSelection.selectionModel)
 
     return (

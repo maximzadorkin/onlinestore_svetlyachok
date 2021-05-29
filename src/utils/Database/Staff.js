@@ -1,11 +1,10 @@
-import {_getDataBaseConnection} from './Connector'
+import { _getDataBaseConnection } from './Connector'
 
 const addPositionForStaffID = (staffId, positions, callback = null) => {
     const connection = _getDataBaseConnection()
     connection.connect()
-    let queryText = ''
-    positions.map(pos => {
-        queryText += `
+    positions.forEach(pos => {
+        const queryText = `
             insert into Должности_Сотрудники(
                 Должности_id,
                 Сотрудники_id
@@ -14,8 +13,8 @@ const addPositionForStaffID = (staffId, positions, callback = null) => {
                 ${staffId}
             );
         `
+        connection.query(queryText, typeof callback === 'function' ? callback : null)
     })
-    connection.query(queryText, typeof callback === 'function' ? callback : null)
     connection.end()
 }
 
@@ -77,6 +76,11 @@ const update = (row, callback = null) => {
     const connection = _getDataBaseConnection()
     connection.connect()
     let queryText = `
+        delete from Должности_Сотрудники
+        where Сотрудники_id=${row.id};
+    `
+    connection.query(queryText)
+    queryText = `
         update сотрудники 
         set Имя='${row.Имя}', 
             Отчество='${row.Отчество}',
@@ -85,9 +89,7 @@ const update = (row, callback = null) => {
             Email='${row.Email}',
             Login='${row.Login}',
             Password='${row.Password}'
-        where id='${row.id}';
-        delete from Должности_Сотрудники
-        where Сотрудники_id=${row.id};
+        where id=${row.id};
     `
     connection.query(
         queryText,
@@ -100,11 +102,14 @@ const update = (row, callback = null) => {
 const del = (row, callback = null) => {
     const connection = _getDataBaseConnection()
     connection.connect()
-    const queryText = `
-        delete from сотрудники 
-        where id='${row.id}';
+    let queryText = `
         delete from Должности_Сотрудники
         where Сотрудники_id=${row.id};
+    `
+    connection.query(queryText, callback)
+    queryText = `
+        delete from сотрудники 
+        where id=${row.id};
     `
     connection.query(queryText, callback)
     connection.end()

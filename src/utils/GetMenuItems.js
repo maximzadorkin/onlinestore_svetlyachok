@@ -7,6 +7,8 @@ import StaffPositions from '../containers/Sections/StaffPositions'
 import Clients from '../containers/Sections/Clients'
 import Products from '../containers/Sections/Products'
 import Staff from '../containers/Sections/Staff'
+import Supplies from './../containers/Sections/Supplies'
+import Transactions from './../containers/Sections/Transactions'
 
 const GetMenuItems = () => [
     {
@@ -29,7 +31,7 @@ const GetMenuItems = () => [
         title: 'Поставки',
         elements: [
             { title: 'Поставщики', component: <Suppliers /> },
-            { title: 'Поставки', component: <ErrorPage /> },
+            { title: 'Поставки', component: <Supplies /> },
         ],
     },
     {
@@ -43,8 +45,7 @@ const GetMenuItems = () => [
     {
         title: 'Сделки',
         elements: [
-            { title: 'Создать заказ', component: <ErrorPage /> },
-            { title: 'Заказы', component: <ErrorPage /> },
+            { title: 'Заказы', component: <Transactions /> },
         ],
     },
 ]
