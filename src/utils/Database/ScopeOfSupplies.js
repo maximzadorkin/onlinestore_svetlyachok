@@ -11,10 +11,9 @@ const get = (callback = null) => {
 }
 
 const add = (row, callback = null) => {
-    // TODO: изменить количество товара в таблице Товары
     const connection = _getDataBaseConnection()
     connection.connect()
-    const queryText = `
+    let queryText = `
         insert into Поставки_Товары(
             Штука_Стоимость,
             КоличествоТовара,
@@ -33,7 +32,6 @@ const add = (row, callback = null) => {
 }
 
 const update = (row, callback = null) => {
-    // TODO: изменить количество товара в таблице Товары
     const connection = _getDataBaseConnection()
     connection.connect()
     const queryText = `
@@ -48,7 +46,6 @@ const update = (row, callback = null) => {
 }
 
 const del = (row, callback = null) => {
-    // TODO: изменить количество товара в таблице Товары
     const connection = _getDataBaseConnection()
     connection.connect()
     const queryText = `

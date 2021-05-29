@@ -5,6 +5,7 @@ const initialState = {
 }
 
 const transactions = (state = initialState, action) => {
+
     switch (action.type) {
         case ActionTypes.GET_TRANSACTIONS:
             return { ...state, transactions: action.payload }

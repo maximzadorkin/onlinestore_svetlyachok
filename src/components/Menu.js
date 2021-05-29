@@ -19,8 +19,8 @@ const GetMenuItems = (MenuItems, onClose, SetSelectedMenu) => {
     }
 
     return MenuItems.map((item) => (
-        <Box m={2} key={_.uniqueId()}>
-            <Card variant='outlined'>
+        <Box m={2} key={_.uniqueId()} height='100%'>
+            <Card variant='outlined' style={{ height: '100%' }}>
                 <Box p={2}>
                     <Typography variant='h1' variant='h6' color='primary'>
                         {item.title}
@@ -71,7 +71,7 @@ const MenuList = ({ MenuItems, MenuTitle, SetSelectedMenu }) => {
                                 p={5}
                                 overflow='auto'
                             >
-                                <Box display='flex' flexWrap='wrap'>
+                                <Box display='flex' flexWrap='wrap' alignItems='stretch'>
                                     {GetMenuItems(
                                         MenuItems,
                                         ChangeViewMenuMode,
