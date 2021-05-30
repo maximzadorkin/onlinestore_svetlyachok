@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-const forDatabase = stringDate => stringDate.split('-').join('.')
+const forDatabase = stringDate => stringDate//.split('-')
 
 const forCRM = stringDate => {
     const date = new Date(stringDate)

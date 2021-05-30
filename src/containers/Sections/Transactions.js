@@ -41,6 +41,7 @@ class Transactions extends React.Component {
         this.props.getClients()
         this.props.getProducts()
         this.props.getTransactions()
+        this.setState({ Role: this.props.Role })
     }
 
     getTableRows = () => _.cloneDeep(this.props.transactions).map(tr => {
@@ -111,7 +112,8 @@ class Transactions extends React.Component {
             }) : [], // full information: id, count, price
             selectionList: _.cloneDeep(this.props.products).map(c => ({
                 value: c.id,
-                display: c.Наименование
+                display: c.Наименование,
+                Штука_Стоимость: c.Цена
             }))
         }
         return initState
@@ -174,14 +176,12 @@ class Transactions extends React.Component {
                     setSelectionModel={selectionModel => this.setState({ selectionModel })}
                 />
                 {this.state.ShowModal && (
-                    <Modal open={true}>
-                        <Transaction
-                            RefactorMode={this.state.RefactorMode}
-                            closeModal={() => this.setState({ ShowModal: false })}
-                            initialState={this.getModalInitialState()}
-                            MainButtonHandler={this.MainModalButtonHandler}
-                        />
-                    </Modal>
+                    <Transaction
+                        RefactorMode={this.state.RefactorMode}
+                        closeModal={() => this.setState({ ShowModal: false })}
+                        initialState={this.getModalInitialState()}
+                        MainButtonHandler={this.MainModalButtonHandler}
+                    />
                 )}
             </Box>
         )
@@ -189,11 +189,11 @@ class Transactions extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    transactions: state.transactions.transactions,
-    staff: state.staff.staff,
-    staffPositions: state.staff.positions,
-    clients: state.clients.clients,
-    products: state.products.products
+    transactions: state.transactions.transactions || [],
+    staff: state.staff.staff || [],
+    staffPositions: state.staff.positions || [],
+    clients: state.clients.clients || [],
+    products: state.products.products || []
 })
 
 const mapDispatchToProps = dispatch => {

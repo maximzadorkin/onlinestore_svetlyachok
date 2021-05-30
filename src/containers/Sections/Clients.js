@@ -1,5 +1,5 @@
 import React from 'react'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import DB from '../../utils/Database/Clients'
 import Actions from '../../store/actions/clients'
 import SimplePageInterface from './SimplePageInterface'
@@ -11,12 +11,12 @@ class Clients extends SimplePageInterface {
         this.state = {
             ...this.state,
             columns: [
-                {field: 'id', headerName: 'id'},
-                {field: 'Имя', headerName: 'Имя'},
-                {field: 'Отчество', headerName: 'Отчество'},
-                {field: 'Фамилия', headerName: 'Фамилия'},
-                {field: 'Телефон', headerName: 'Телефон'},
-                {field: 'Email', headerName: 'Email'}
+                { field: 'id', headerName: 'id' },
+                { field: 'Имя', headerName: 'Имя' },
+                { field: 'Отчество', headerName: 'Отчество' },
+                { field: 'Фамилия', headerName: 'Фамилия' },
+                { field: 'Телефон', headerName: 'Телефон' },
+                { field: 'Email', headerName: 'Email' }
             ],
         }
     }
@@ -87,7 +87,7 @@ class Clients extends SimplePageInterface {
 
 
 const mapStateToProps = state => ({
-    rows: state.clients.clients
+    rows: state.clients.clients || []
 })
 
 const mapDispatchToProps = dispatch => {

@@ -114,9 +114,9 @@ class Products extends SimplePageInterface {
 }
 
 const mapStateToProps = state => ({
-    rows: state.products.products,
-    categories: state.products.categories,
-    vendors: state.products.vendors
+    rows: state.products.products || [],
+    categories: state.products.categories || [],
+    vendors: state.products.vendors || []
 })
 const mapDispatchToProps = dispatch => {
 

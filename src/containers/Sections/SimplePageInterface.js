@@ -1,7 +1,7 @@
 import React from 'react'
-import {Box} from '@material-ui/core'
+import { Box } from '@material-ui/core'
 import Table from '../../components/Table'
-import ControlPanel, {Roles} from '../../components/ControlPanel'
+import ControlPanel, { Roles } from '../../components/ControlPanel'
 import _ from 'lodash'
 import ModalRowHandler from '../../components/ModalRowHandler'
 
@@ -20,16 +20,18 @@ class SimplePageInterface extends React.Component {
             ShowModal: false,
             ModalOptions: [],
             columns: [
-                {field: 'id', headerName: 'id'}
+                { field: 'id', headerName: 'id' }
             ],
         }
     }
 
-    componentDidMount = () =>
+    componentDidMount = () => {
         this.props.get()
+        this.setState({ Role: this.props.Role })
+    }
 
     onRowClick = (e) =>
-        this.setState({SelectRow: _.cloneDeep(e.row)})
+        this.setState({ SelectRow: _.cloneDeep(e.row) })
 
     getTableRows = () =>
         this.props.rows
@@ -80,7 +82,7 @@ class SimplePageInterface extends React.Component {
             this.props.update(currentRowObject)
         else
             this.props.add(currentRowObject)
-        this.setState({ShowModal: false, RefactorMode: false})
+        this.setState({ ShowModal: false, RefactorMode: false })
     }
 
     render = () => {
@@ -98,12 +100,12 @@ class SimplePageInterface extends React.Component {
                     columns={this.state.columns}
                     onRowClick={this.onRowClick}
                     selectionModel={this.state.selectionModel}
-                    setSelectionModel={(selectionModel) => this.setState({selectionModel})}
+                    setSelectionModel={(selectionModel) => this.setState({ selectionModel })}
                 />
                 {this.state.ShowModal && (
                     <ModalRowHandler
                         open={this.state.ShowModal}
-                        onClose={() => this.setState({ShowModal: false, RefactorMode: false})}
+                        onClose={() => this.setState({ ShowModal: false, RefactorMode: false })}
                         row={this.state.ModalOptions}
                         RefactorMode={this.state.RefactorMode}
                         ButtonHandler={this.HandlerButtonModal}
@@ -114,4 +116,4 @@ class SimplePageInterface extends React.Component {
     }
 }
 
-export default SimplePageInterface  
+export default SimplePageInterface

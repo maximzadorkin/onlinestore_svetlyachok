@@ -1,5 +1,5 @@
 import React from 'react'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import DB from '../../utils/Database/ProductCategories'
 import Actions from '../../store/actions/products'
 import SimplePageInterface from './SimplePageInterface'
@@ -11,8 +11,8 @@ class ProductCategories extends SimplePageInterface {
         this.state = {
             ...this.state,
             columns: [
-                {field: 'id', headerName: 'id'},
-                {field: 'Наименование', headerName: 'Наименование'}
+                { field: 'id', headerName: 'id' },
+                { field: 'Наименование', headerName: 'Наименование' }
             ],
         }
     }
@@ -40,12 +40,12 @@ class ProductCategories extends SimplePageInterface {
         ]
     }
 
-}   
+}
 
 
 
 const mapStateToProps = state => ({
-        rows: state.products.categories
+    rows: state.products.categories || []
 })
 
 const mapDispatchToProps = dispatch => {

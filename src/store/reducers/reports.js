@@ -11,6 +11,8 @@ const reports = (state = initialState, action) => {
             return { ...state, countSalesForDataRange: action.payload }
         case ActionTypes.GET_STOCK_BALANCE:
             return { ...state, stockBalance: action.payload }
+        case ActionTypes.GET_BUYERS_LIST_FOR_DATE_RANGE:
+            return { ...state, buyersListForDateRange: action.payload }
         default:
             return state
     }

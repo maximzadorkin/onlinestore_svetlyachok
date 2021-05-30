@@ -53,6 +53,7 @@ class Supplies extends React.Component {
         this.props.getSuppliers()
         this.props.getSupplies()
         this.props.getScopes()
+        this.setState({ Role: this.props.Role })
     }
 
     onSuppliesRowClick = (e) =>
@@ -318,14 +319,14 @@ class Supplies extends React.Component {
 
 
 const mapStateToProps = state => ({
-    staff: state.staff.staff,
-    suppliers: state.supplies.suppliers,
-    products: state.products.products,
-    supplies: state.supplies.supplies,
+    staff: state.staff.staff || [],
+    suppliers: state.supplies.suppliers || [],
+    products: state.products.products || [],
+    supplies: state.supplies.supplies || [],
     scopes: state.supplies.scopes.map((s, index) => {
         s.id = index
         return s
-    })
+    }) || []
 })
 
 const mapDispatchToProps = dispatch => {

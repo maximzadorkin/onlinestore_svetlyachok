@@ -12,7 +12,7 @@ import {
 import MenuIcon from '@material-ui/icons/Menu'
 import _ from 'lodash'
 
-const GetMenuItems = (MenuItems, onClose, SetSelectedMenu) => {
+const GetMenuItems = ({ MenuItems, onClose, SetSelectedMenu }) => {
     const HandleClose = (el) => {
         SetSelectedMenu(el)
         onClose()
@@ -40,24 +40,30 @@ const GetMenuItems = (MenuItems, onClose, SetSelectedMenu) => {
     ))
 }
 
-const MenuList = ({ MenuItems, MenuTitle, SetSelectedMenu }) => {
+const MenuList = ({ PositionsList, MenuTitle, SetSelectedMenu, leftButton }) => {
     const [ViewMenu, SetViewMenu] = useState(false)
-    const ChangeViewMenuMode = () => {
+    const ChangeViewMenuMode = () =>
         SetViewMenu(!ViewMenu)
-    }
 
     return (
         <Box>
             <AppBar position='static'>
                 <Toolbar>
-                    <IconButton
-                        color='inherit'
-                        onClick={ChangeViewMenuMode}
-                        edge='start'
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography variant='h6'>{MenuTitle}</Typography>
+                    <Box display='flex' justifyContent='space-between' width='100%'>
+                        <Box display='flex' alignItems='center'>
+                            <IconButton
+                                color='inherit'
+                                onClick={ChangeViewMenuMode}
+                                edge='start'
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                            <Typography variant='h6'>{MenuTitle}</Typography>
+                        </Box>
+                        <Button onClick={leftButton.handler} color='inherit'>
+                            {leftButton.label}
+                        </Button>
+                    </Box>
                 </Toolbar>
             </AppBar>
             {ViewMenu && (
@@ -71,12 +77,19 @@ const MenuList = ({ MenuItems, MenuTitle, SetSelectedMenu }) => {
                                 p={5}
                                 overflow='auto'
                             >
-                                <Box display='flex' flexWrap='wrap' alignItems='stretch'>
-                                    {GetMenuItems(
-                                        MenuItems,
-                                        ChangeViewMenuMode,
-                                        SetSelectedMenu
-                                    )}
+                                <Box display='flex' flexDirection='column'>
+                                    {PositionsList.map(position => (
+                                        <React.Fragment key={_.uniqueId()}>
+                                            <Typography variant='h6'>{position.title}</Typography>
+                                            <Box display='flex' flexWrap='wrap' alignItems='stretch'>
+                                                {GetMenuItems({
+                                                    MenuItems: position.elements,
+                                                    onClose: ChangeViewMenuMode,
+                                                    SetSelectedMenu: SetSelectedMenu
+                                                })}
+                                            </Box>
+                                        </React.Fragment>
+                                    ))}
                                 </Box>
                             </Box>
                             <Box

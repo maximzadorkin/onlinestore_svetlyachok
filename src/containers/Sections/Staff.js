@@ -1,5 +1,5 @@
 import React from 'react'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import DB from '../../utils/Database/Staff'
 import DBStaffPositions from '../../utils/Database/StaffPositions'
 import Actions from '../../store/actions/staff'
@@ -13,15 +13,15 @@ class Staff extends SimplePageInterface {
         this.state = {
             ...this.state,
             columns: [
-                {field: 'id', headerName: 'id'},
-                {field: 'Имя', headerName: 'Имя'},
-                {field: 'Отчество', headerName: 'Отчество'},
-                {field: 'Фамилия', headerName: 'Фамилия'},
-                {field: 'Телефон', headerName: 'Телефон'},
-                {field: 'Email', headerName: 'Email'},
-                {field: 'Должности', headerName: 'Занимаемые должности'},
-                {field: 'Login', headerName: 'Login'},
-                {field: 'Password', headerName: 'Password'},
+                { field: 'id', headerName: 'id' },
+                { field: 'Имя', headerName: 'Имя' },
+                { field: 'Отчество', headerName: 'Отчество' },
+                { field: 'Фамилия', headerName: 'Фамилия' },
+                { field: 'Телефон', headerName: 'Телефон' },
+                { field: 'Email', headerName: 'Email' },
+                { field: 'Должности', headerName: 'Занимаемые должности' },
+                { field: 'Login', headerName: 'Login' },
+                { field: 'Password', headerName: 'Password' },
             ]
         }
     }
@@ -131,8 +131,8 @@ class Staff extends SimplePageInterface {
 }
 
 const mapStateToProps = state => ({
-    rows: state.staff.staff,
-    positions: state.staff.positions,
+    rows: state.staff.staff || [],
+    positions: state.staff.positions || [],
 })
 
 const mapDispatchToProps = dispatch => {

@@ -8,8 +8,13 @@ const getStockBalance = payload => ({
     type: ActionTypes.GET_STOCK_BALANCE,
     payload
 })
+const getBuyersListForDateRange = payload => ({
+    type: ActionTypes.GET_BUYERS_LIST_FOR_DATE_RANGE,
+    payload
+})
 
 export default {
+    getBuyersListForDateRange,
     getStockBalance,
     getCountSalesForDateRange
 }
