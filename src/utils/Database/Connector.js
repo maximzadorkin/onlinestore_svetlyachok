@@ -4,7 +4,7 @@ const _getDataBaseConnection = () => {
     return mysql.createConnection({
         host: "localhost",
         user: "root",
-        password: "12345678",
+        password: "1234",
         database: "onlinestore"
     })
 }

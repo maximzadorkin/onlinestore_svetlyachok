@@ -50,11 +50,13 @@ const add = (row, callback = null) => {
         insert into Сделки(
             Клиенты_id,
             Сотрудники_id,
-            Стоимость_сделки
+            Стоимость_сделки,
+            Дата
         ) values(
             ${row.Сделка.Клиент.value},
             ${row.Сделка.Продавец.value},
-            ${row.Сделка.СтоимостьСделки}
+            ${row.Сделка.СтоимостьСделки},
+            '${convertDate.forDatabase(new Date().toJSON().slice(0, 10))}'
         );
     `
     connection.query(queryText, (_err, result) => {
