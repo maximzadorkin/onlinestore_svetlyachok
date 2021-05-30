@@ -9,14 +9,16 @@ import Products from '../containers/Sections/Products'
 import Staff from '../containers/Sections/Staff'
 import Supplies from './../containers/Sections/Supplies'
 import Transactions from './../containers/Sections/Transactions'
+import CountSalesForDateRange from '../containers/Reports/CountSalesForDateRange'
+import StockBalances from '../containers/Reports/StockBalances'
 
 const GetMenuItems = () => [
     {
         title: 'Отчеты',
         elements: [
             { title: 'Список покупателей за период', component: <ErrorPage /> },
-            { title: 'Количество продаж за период', component: <ErrorPage /> },
-            { title: 'Остатки на складе', component: <ErrorPage /> },
+            { title: 'Количество продаж за период', component: <CountSalesForDateRange /> },
+            { title: 'Остатки на складе', component: <StockBalances /> },
         ],
     },
     {
