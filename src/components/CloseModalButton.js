@@ -2,7 +2,7 @@ import { Box, Button } from '@material-ui/core'
 import React from 'react'
 
 const CloseModalButton = ({ handleClose }) => (
-    <Box width='100%' display='flex' justifyContent='flex-start' mb={3}>
+    <Box width='100%' display='flex' justifyContent='flex-end' mb={3}>
         <Button
             size='small'
             variant='contained'

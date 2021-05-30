@@ -12,11 +12,11 @@ class Products extends SimplePageInterface {
         this.state = {
             ...this.state,
             columns: [
-                { field: 'id', headerName: 'id' },
+                { field: 'id', headerName: 'id', width: 100 },
                 { field: 'Наименование', headerName: 'Наименование' },
-                { field: 'Цена', headerName: 'Цена' },
+                { field: 'Цена', headerName: 'Цена', width: 120 },
                 { field: 'Описание', headerName: 'Описание' },
-                { field: 'КоличествоНаСкладе', headerName: 'Количество на складе' },
+                { field: 'КоличествоНаСкладе', headerName: 'Количество на складе', width: 150 },
                 { field: 'Категории_id', headerName: 'Категория' },
                 { field: 'Производитель_id', headerName: 'Производитель' },
             ],

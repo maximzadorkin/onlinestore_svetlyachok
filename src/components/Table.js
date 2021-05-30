@@ -10,7 +10,7 @@ const Table = ({ rows, columns, onRowClick, selectionModel, setSelectionModel })
     const onChangeSelection = (newSelection) => setSelectionModel(newSelection.selectionModel)
 
     return (
-        <div style={{ height: '650px', width: '100%' }} id='table'>
+        <div style={{ height: '600px', width: '100%' }} id='table'>
             <DataGrid
                 rows={rows}
                 columns={SetWidth(columns)}

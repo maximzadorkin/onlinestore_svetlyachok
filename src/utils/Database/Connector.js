@@ -4,11 +4,11 @@ const _getDataBaseConnection = () => {
     return mysql.createConnection({
         host: "localhost",
         user: "root",
-        password: "1234",
+        password: "12345678",
         database: "onlinestore"
     })
 }
 
-export  {
+export {
     _getDataBaseConnection
 }
