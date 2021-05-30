@@ -277,6 +277,9 @@ const Transaction = ({ closeModal, RefactorMode, initialState, MainButtonHandler
                                             />
                                         </Box>
                                         <Button fullWidth size='small' color='primary' variant='outlined' onClick={() => {
+                                            const fill = productState.Товары_id && productState.КоличествоТовара
+                                            if (!fill) return
+
                                             const containsID = state.Товары.Товары.map(p => p.Товары_id)
                                             const HaveThisProduct = containsID.includes(productState.Товары_id)
                                             const prodState = _.cloneDeep(productState)

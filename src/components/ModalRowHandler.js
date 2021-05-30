@@ -6,7 +6,7 @@
 //  required: true,
 //  readOnly: false,
 //  type: 'number',
-//  component: 'textField', 'select', 'multipleSelect', 'datepicker'
+//  component: 'textField', 'select', 'multipleSelect', 'datepicker', 'switch'
 // open
 // onClose
 // RefactorMode
@@ -22,6 +22,8 @@ import {
     InputLabel,
     Select,
     MenuItem,
+    FormControlLabel,
+    Switch
 } from '@material-ui/core'
 import CloseModalButton from './CloseModalButton'
 import _ from 'lodash'
@@ -101,7 +103,7 @@ class ModalRowHandler extends React.Component {
 
     multipleSelects = () => this.state.row.filter(item => item.component === 'multipleSelect').map(col => (
         <FormControl
-            key={`${col.id}_${col.label}_${col.value.toString()}`}
+            key={_.uniqueId()}
             variant='outlined'
             fullWidth
             style={{ marginBottom: '1rem' }}
@@ -123,6 +125,21 @@ class ModalRowHandler extends React.Component {
                 ))}
             </Select>
         </FormControl>
+    ))
+
+    switches = () => this.state.row.filter(item => item.component === 'switch').map(col => (
+        <FormControlLabel
+            key={_.uniqueId()}
+            control={
+                <Switch
+                    checked={this.state[this.returnStateName(col.id)].value}
+                    onChange={event =>
+                        this.HandlerInputChange(!this.state[this.returnStateName(col.id)].value, col)}
+                    color='primary'
+                />
+            }
+            label={col.label}
+        />
     ))
 
     ButtonHandler = () => {
@@ -160,6 +177,7 @@ class ModalRowHandler extends React.Component {
                         {this.textFields()}
                         {this.selects()}
                         {this.multipleSelects()}
+                        {this.switches()}
                         <Box display='flex' justifyContent='center' width='100%'>
                             <Button
                                 variant='contained'

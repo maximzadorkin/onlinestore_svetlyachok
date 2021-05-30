@@ -102,10 +102,15 @@ class Supplies extends React.Component {
                 value: RefMode ? [SelectRow.Сотрудники_id] : '',
                 required: true,
                 readOnly: false,
-                selectionList: this.props.staff.map(s => ({
-                    value: s.id,
-                    display: s.Фамилия
-                })),
+                selectionList: this.props.staff.filter(sel => sel.Действителен)
+                    .filter(sel => {
+                        const pos = sel.Должности.map(p => p.Должности_id)
+                        return pos.includes(1) || pos.includes(2) || pos.includes(3)
+                    })
+                    .map(s => ({
+                        value: s.id,
+                        display: s.Фамилия
+                    })),
                 component: 'select'
             }
         ]

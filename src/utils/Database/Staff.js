@@ -37,7 +37,13 @@ const get = (callback = null) => {
     const connection = _getDataBaseConnection()
     connection.connect()
     const queryText = `select * from сотрудники;`
-    const currentCallback = (_err, rows) => getPositionsForStaff(rows, callback)
+    const currentCallback = (_err, rows) => {
+        rows = rows.map(row => {
+            row.Действителен = Boolean(row.Действителен)
+            return row
+        })
+        getPositionsForStaff(rows, callback)
+    }
     connection.query(queryText, currentCallback)
     connection.end()
 }
@@ -53,7 +59,8 @@ const add = (row, callback = null) => {
             Телефон, 
             Email,
             Login,
-            Password
+            Password,
+            Действителен
         ) values(
             '${row.Имя}',
             '${row.Отчество}',
@@ -61,7 +68,8 @@ const add = (row, callback = null) => {
             '${row.Телефон}',
             '${row.Email}',
             '${row.Login}',
-            '${row.Password}'
+            '${row.Password}',
+            ${Number(row.Действителен)}
         );
     `
     connection.query(
@@ -88,7 +96,8 @@ const update = (row, callback = null) => {
             Телефон='${row.Телефон}',
             Email='${row.Email}',
             Login='${row.Login}',
-            Password='${row.Password}'
+            Password='${row.Password}',
+            Действителен=${Number(row.Действителен)}
         where id=${row.id};
     `
     connection.query(
@@ -102,13 +111,9 @@ const update = (row, callback = null) => {
 const del = (row, callback = null) => {
     const connection = _getDataBaseConnection()
     connection.connect()
-    let queryText = `
-        delete from Должности_Сотрудники
-        where Сотрудники_id=${row.id};
-    `
-    connection.query(queryText, callback)
-    queryText = `
-        delete from сотрудники 
+    const queryText = `
+        update сотрудники 
+        set Действителен=0
         where id=${row.id};
     `
     connection.query(queryText, callback)

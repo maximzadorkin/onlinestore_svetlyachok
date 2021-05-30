@@ -28,6 +28,7 @@ class Transactions extends React.Component {
             columns: [
                 { field: 'id', headerName: 'id', width: 100 },
                 { field: 'Клиент_id', headerName: 'Клиент', width: 150 },
+                { field: 'Доставка_Курьер_id', headerName: 'Курьер', width: 150 },
                 { field: 'Сотрудник_id', headerName: 'Сотрудник', width: 200 },
                 { field: 'Стоимость_сделки', headerName: 'Стоимость сделки', width: 250 },
                 { field: 'Доставка_Доставлено', headerName: 'Доставлено', width: 200 }
@@ -49,6 +50,8 @@ class Transactions extends React.Component {
             .find(c => c.id === tr.Клиент_id)?.Фамилия
         tr.Сотрудник_id = this.props.staff
             .find(c => c.id === tr.Сотрудник_id)?.Фамилия
+        tr.Доставка_Курьер_id = this.props.staff
+            .find(c => c.id === tr.Доставка_Курьер_id)?.Фамилия
         tr.Доставка_Доставлено = tr.Доставка_Доставлено === 1 ? 'да' : 'нет'
         return tr
     })
@@ -80,7 +83,7 @@ class Transactions extends React.Component {
             },
             Продавец: {
                 value: RefM ? SelRow.Сотрудник_id : '',
-                selectionList: _.cloneDeep(sellers).map(c => ({
+                selectionList: _.cloneDeep(sellers).filter(sel => sel.Действителен).map(c => ({
                     value: c.id,
                     display: c.Фамилия
                 }))
@@ -98,7 +101,7 @@ class Transactions extends React.Component {
             Доставлено: RefM ? +SelRow.Доставка_Доставлено : 0,
             Курьер: {
                 value: RefM ? SelRow.Доставка_Курьер_id : '',
-                selectionList: _.cloneDeep(couriers).map(c => ({
+                selectionList: _.cloneDeep(couriers).filter(sel => sel.Действителен).map(c => ({
                     value: c.id,
                     display: c.Фамилия
                 }))
@@ -128,13 +131,18 @@ class Transactions extends React.Component {
         RefactorMode: false
     })
 
-    HandlerButtonUpdate = () => this.setState({
-        ShowModal: true,
-        RefactorMode: true
-    })
+    HandlerButtonUpdate = () => {
+        if (_.isEmpty(this.state.SelectRow)) return
+        this.setState({
+            ShowModal: true,
+            RefactorMode: true
+        })
+    }
 
-    HandlerButtonDelete = () =>
+    HandlerButtonDelete = () => {
+        if (_.isEmpty(this.state.SelectRow)) return
         this.props.deleteTransaction(this.state.SelectRow)
+    }
 
     MainModalButtonHandler = row => {
         row.Товары.Товары = row.Товары.Товары.map(p => {

@@ -22,6 +22,7 @@ class Staff extends SimplePageInterface {
                 { field: 'Должности', headerName: 'Занимаемые должности' },
                 { field: 'Login', headerName: 'Login' },
                 { field: 'Password', headerName: 'Password' },
+                { field: 'Действителен', headerName: 'Действителен' },
             ]
         }
     }
@@ -33,6 +34,7 @@ class Staff extends SimplePageInterface {
 
     getTableRows = () => _.cloneDeep(this.props.rows).map(row => ({
         ...row,
+        Действителен: !!row.Действителен ? 'да' : 'нет',
         Должности: row.Должности.map(r =>
             this.props.positions.find(pos => pos.id === r.Должности_id).Наименование)
     }))
@@ -125,6 +127,14 @@ class Staff extends SimplePageInterface {
                 required: false,
                 readOnly: false,
                 component: 'textField'
+            },
+            {
+                label: 'Действителен',
+                value: RefMode ? SelectRow.Действителен : '',
+                selectionList: [],
+                required: false,
+                readOnly: true,
+                component: 'switch'
             },
         ]
     }
