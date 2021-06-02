@@ -10,7 +10,7 @@ import DB from '../utils/Database/Auth'
 const App = () => {
     const [SelectedMenu, SetSelectedMenu] = useState(null)
     const [Login, setLogin] = useState(false)
-    const [MenuLinks, setMenuLinks] = useState([])//GetMenuItems()
+    const [MenuLinks, setMenuLinks] = useState([])
     const [LoginData, SetLogInData] = useState({
         login: '',
         password: '',
