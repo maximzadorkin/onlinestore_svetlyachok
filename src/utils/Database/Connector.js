@@ -1,5 +1,7 @@
+import mysql from 'mysql2'
+
 const _getDataBaseConnection = () => {
-    const mysql = require("mysql2")
+    // const mysql = require("mysql2")
 
     return mysql.createConnection({
         host: "localhost",
